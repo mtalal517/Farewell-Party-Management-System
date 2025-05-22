@@ -40,11 +40,12 @@ A web-based platform to manage farewell party events using **Node.js**, **Expres
 
 ## 🗂️ Project Structure
 Farewell-Party-Management-System/
-├── app.js # Main Express app
+```
+├── server.js # Main Express app
 ├── views/ # HTML front-end views (Login, Dashboards, etc.)
 ├── package.json # Node.js dependencies
 └── README.md # Documentation
-
+```
 
 ---
 
@@ -53,7 +54,7 @@ Farewell-Party-Management-System/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/farewell-party-management-system.git
+git clone https://github.com/mtalal517/TextViz.git
 ```
 
 ### 2.  Install Dependencies
@@ -63,7 +64,7 @@ npm install
 
 ### 3.  Run the Server
 ```bash
-node app.js
+node server.js
 ```
 
 Let me know if you also want a ER diagram, Schema Digram etc.
