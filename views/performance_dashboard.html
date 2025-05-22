@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performance Management Dashboard - Farewell Party Management System</title>
+<style>
+/* General styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+nav {
+  background-color: #f4f4f4;
+  padding: 10px 0;
+}
+
+nav ul {
+  list-style-type: none;
+  text-align: center;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #ff7f50;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Performance Management Dashboard styles */
+.dashboard-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.performance-dashboard {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.performance-item {
+  margin-bottom: 20px;
+}
+
+.performance-item label {
+  display: block;
+  font-weight: bold;
+}
+
+.performance-item input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.performance-item select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.performance-item button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.performance-item button:hover {
+  background-color: #555;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Welcome to the Performance Management Dashboard</h1>
+</header>
+
+<nav>
+  <ul>
+    <!-- Navigation links can be added here if needed -->
+  </ul>
+</nav>
+
+<main>
+  <!-- Performance Management Dashboard -->
+  <section id="performanceManagementDashboard" class="dashboard-container">
+    <div class="performance-dashboard">
+      <h2>Manage Performances</h2>
+      <!-- View Performances Section -->
+      <div class="performance-item">
+        <h3>View Performances</h3>
+        <!-- Dynamically display performances in a table -->
+        <table id="performanceTable">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Duration (mins)</th>
+              <th>Requirements</th>
+              <th>Student ID</th>
+              <th>Description</th>
+              <th>Voting</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Table rows will be added here by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+      <!-- Manage Performances Section -->
+      <div class="performance-item">
+        <h3>Manage Performances</h3>
+        <!-- Form for accepting or rejecting performance proposals -->
+        <form action="performance-overview" method="POST">
+          <label for="proposed-performance">Select Proposed Performance:</label>
+          <select id="proposed-performance" name="proposed-performance" required>
+            <option value="">Select Performance</option>>
+          </select>
+          <button type="submit" name="accept">Accept</button>
+          <button type="submit" name="reject">Reject</button>
+        </form>
+        <!-- Form for allocating time slots and venues for performances -->
+        <form action="allocate_slots_venues.php" method="POST">
+          <label for="allocated-performance">Select Performance:</label>
+          <select id="allocated-performance" name="allocated-performance" required>
+            <option value="">Select Performance</option>
+            <!-- Populate options dynamically from database or predefined list -->
+            <option value="performance-1">Performance 1</option>
+            <option value="performance-2">Performance 2</option>
+            <option value="performance-3">Performance 3</option>
+          </select>
+          <label for="time-slot">Allocate Time Slot:</label>
+          <input type="text" id="time-slot" name="time-slot" required>
+          <label for="venue">Allocate Venue:</label>
+          <input type="text" id="venue" name="venue" required>
+          <button type="submit">Allocate</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2024 Farewell Party Management System. All rights reserved.</p>
+</footer>
+<script>
+  // Fetching performance data from the server
+  fetch('/performance-overview')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      const tableBody = document.getElementById('performanceTable').getElementsByTagName('tbody')[0];
+      // Clear existing rows
+      tableBody.innerHTML = '';
+      // Append each performance to the table
+      data.forEach(performance => {
+        const row = tableBody.insertRow();
+        row.insertCell(0).textContent = performance.Type;
+        row.insertCell(1).textContent = performance.Duration;
+        row.insertCell(2).textContent = performance.SpecialRequirements;
+        row.insertCell(3).textContent = performance.StudentID;
+        row.insertCell(4).textContent = performance.Description;
+        row.insertCell(5).textContent = performance.Voting;
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching performances:', error);
+    });
+
+    function updatePerformance(performanceId, rowIndex) {
+      const row = document.getElementById('performanceTable').rows[rowIndex + 1];
+      const updatedData = {
+        id: performanceId,
+        newType: row.cells[0].children[0].value,
+        newDuration: parseInt(row.cells[1].children[0].value, 10),
+        newRequirements: row.cells[2].children[0].value,
+        newStudentID: parseInt(row.cells[3].children[0].value, 10),
+        newDescription: row.cells[4].children[0].value,
+        newVoting: parseInt(row.cells[5].children[0].value, 10)
+      };
+    
+      fetch('/modify_performance', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedData)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to update performance');
+        }
+        return response.text();
+      })
+      .then(result => {
+        alert(result);
+      })
+      .catch(error => {
+        console.error('Error updating performance:', error);
+      });
+    }
+  </script>
+  
+</body>
+</html>

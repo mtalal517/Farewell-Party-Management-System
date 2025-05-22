@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login/Registration - Farewell Party Management System</title>
+<style>
+/* General styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 30px;
+  text-align: center; /* Center align content */
+}
+
+h2 {
+  color: #333;
+}
+
+/* Login/Registration form styles */
+form {
+  max-width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block; /* Display labels as block elements */
+  margin-bottom: 10px; /* Add some space between labels and inputs */
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+select,
+button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* Include padding and border in element's total width */
+}
+
+button {
+  background-color: #ff7f50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ff6347;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Login/Registration</h1>
+</header>
+
+<main>
+  <section id="login">
+    <h2>Login</h2>
+    <form action="/login" method="post">
+      <label for="loginUsername">(Student ID)</label>
+      <input type="text" id="loginUsername" name="StudentId" required>
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" name="password" required>
+      <label for="loginRole">Role</label>
+      <select id="loginRole" name="role" required>
+        <option value="Dinner">Manager Dinner</option>
+        <option value="Performance">Manager Performance</option>
+        <option value="Invitation">Manager Invitation</option>
+        <option value="Budget">Manager Budget</option>
+        <option value="Decor">Manager Decor</option>
+        <option value="None">No Role</option>
+      </select>
+      <button type="submit">Login</button>
+    </form>
+  </section>
+
+  <section id="register">
+    <h2>Register</h2>
+    <form action="/register" method="post">
+      <label for="registerUsername">Username</label>
+      <input type="text" id="registerUsername" name="username" required>
+      <label for="registerEmail">Email</label>
+      <input type="email" id="registerEmail" name="email" required>
+      <label for="registerPassword">Password</label>
+      <input type="password" id="registerPassword" name="password" required>
+      <label for="registerRole">Role</label>
+      <select id="registerRole" name="role" required>
+        <option value="Dinner">Manager Dinner</option>
+        <option value="Performance">Manager Performance</option>
+        <option value="Invitation">Manager Invitation</option>
+        <option value="Budget">Manager Budget</option>
+        <option value="Decor">Manager Decor</option>
+        <option value="None">No Role</option>
+      </select>
+      <button type="submit">Register</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2024 Farewell Party Management System. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

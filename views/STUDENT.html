@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard - Farewell Party Management System</title>
+<style>
+/* General styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+nav {
+  background-color: #f4f4f4;
+  padding: 10px 0;
+}
+
+nav ul {
+  list-style-type: none;
+  text-align: center;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #ff7f50;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Add more styles specific to Student Dashboard Page here */
+.student-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.student-container h3 {
+  margin-bottom: 20px;
+}
+
+.student-container label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.student-container input[type="text"],
+.student-container input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.student-container button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.student-container button:hover {
+  background-color: #555;
+}
+
+.dashboard-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.dashboard-container h2 {
+  margin-bottom: 20px;
+}
+
+.updates-item {
+  margin-bottom: 20px;
+}
+
+.updates-item h3 {
+  margin-bottom: 10px;
+}
+
+.updates-item ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.updates-item ul li {
+  margin-bottom: 5px;
+}
+
+.updates-item ul li input[type="text"] {
+  width: 150px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Welcome to the Student Dashboard</h1>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#menu-suggestions">Menu Suggestions</a></li>
+    <li><a href="#performance-proposals">Performance Proposals</a></li>
+    <li><a href="#announcements">Announcements</a></li>
+    <li><a href="#tasks">Your Tasks</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section id="menu-suggestions" class="student-container">
+    <h2>Menu Suggestions</h2>
+    <!-- Menu suggestions form goes here -->
+    <form action="/submit_menu" method="POST">
+      <label for="student-id">Student ID:</label>
+      <input type="text" id="student-id" name="studentId">
+      <label for="menu-item">Menu Item:</label>
+      <input type="text" id="menu-item" name="menuItem">
+      <label for="description">Description:</label>
+      <input type="text" id="description" name="description">
+      <label for="category">Category:</label>
+      <input type="text" id="category" name="category">
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+
+  <section id="performance-proposals" class="student-container">
+    <h2>Performance Proposals</h2>
+    <!-- Performance proposals form goes here -->
+    <form action="/submit_proposal" method="POST">
+      <label for="student-id-perf">Student ID:</label>
+      <input type="text" id="student-id-perf" name="studentId" required>
+      <label for="performance-type">Performance Type:</label>
+      <input type="text" id="performance-type" name="performanceType" required>
+      <label for="duration">Duration (minutes):</label>
+      <input type="number" id="duration" name="duration" required min="1" max="240">
+      <label for="special-requirements">Special Requirements:</label>
+      <input type="text" id="special-requirements" name="specialRequirements" required>
+      <label for="description-perf">Description:</label>
+      <input type="text" id="description-perf" name="description" required>
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+  
+
+  <section id="viewUpdatesSection" class="dashboard-container">
+    <form id="updatesForm" action="/submit_updates" method="post">
+      <h2>View Updates</h2>
+      <!-- Announcements Section -->
+      <div class="updates-item">
+        <h3>View Announcements</h3>
+        <textarea id="announcements" name="announcements" rows="5" readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque justo vel orci pharetra, et consectetur nulla tristique. Sed at aliquam metus. Fusce commodo auctor justo id sollicitudin. Donec finibus erat id nisi rhoncus dapibus. Integer ultricies tortor at sapien tempus, a euismod urna congue. Donec sit amet sagittis odio. Nullam nec velit risus. Curabitur eget dolor sit amet nisi luctus fermentum. Nam commodo, est et pellentesque efficitur, lorem quam malesuada quam, sit amet rhoncus odio eros sed mauris. Donec suscipit vehicula tellus non tristique.</textarea>
+      </div>
+      <!-- Task Assignments Section -->
+      <div class="updates-item">
+        <h3>Check Task Assignments</h3>
+        <ul>
+
+        </ul>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2024 Farewell Party Management System. All rights reserved.</p>
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Fetch and display announcements
+    fetch('/announcements').then(response => response.json()).then(data => {
+      const announcementsElement = document.getElementById('announcements');
+      announcementsElement.value = data.map(announcement => announcement.Message).join("\n");
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const studentId = '6'; // Assume this is dynamically determined or fetched.
+  
+    fetch(`/tasks?studentId=${studentId}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch tasks: ' + response.statusText);
+        }
+        return response.json();
+      })
+      .then(data => {
+        const tasksListElement = document.querySelector('.updates-item ul');
+        tasksListElement.innerHTML = data.map(task => 
+          `<li>${task.Description} - Deadline: <input type="text" value="${task.Deadline}" readonly></li>`
+        ).join('');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  });
+  
+  </script>
+
+</body>
+</html>

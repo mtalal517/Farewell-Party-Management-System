@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitations Management - Farewell Party Management System</title>
+<style>
+/* General styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+nav {
+  background-color: #f4f4f4;
+  padding: 10px 0;
+}
+
+nav ul {
+  list-style-type: none;
+  text-align: center;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #ff7f50;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Invitation Management styles */
+.invitation-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.invitation-form {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.invitation-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.invitation-form input[type="text"],
+.invitation-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.invitation-form button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.invitation-form button:hover {
+  background-color: #555;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Invitations Management</h1>
+</header>
+
+<nav>
+  <ul>
+    <!-- Navigation links can be added here if needed -->    
+  </ul>
+</nav>
+
+<main>
+  <section id="invitationManagement" class="invitation-container">
+
+
+    <div class="invitation-form">
+      <h2>Distribution</h2>
+      <!-- Form for distributing invitations -->
+      <form action="/distribute_invitations" method="POST">
+        <label for="distributionMethod">Select Distribution Method:</label>
+        <select id="distributionMethod" name="distributionMethod" required>
+          <option value="email">Email</option>
+          <option value="print">Print</option>
+          <option value="other">Other</option>
+        </select>
+      </form>
+
+      <!-- Form for sending invitations to a teacher -->
+  <form action="/send_invitation_to_teacher" method="POST">
+    <label for="teacherName">Teacher's Name:</label>
+    <input type="text" id="teacherName" name="teacherName" required>
+    
+    <label for="invitationTitle">Invitation Title:</label>
+    <input type="text" id="invitationTitle" name="invitationTitle" required>
+    
+    <label for="invitationMessage">Invitation Message:</label>
+    <textarea id="invitationMessage" name="invitationMessage" required></textarea>
+    
+    <button type="submit">Send Invitation</button>
+  </form>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2024 Farewell Party Management System. All rights reserved.</p>
+</footer>
+  <script>
+    document.querySelector('form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const teacherName = document.getElementById('teacherName').value;
+      const title = document.getElementById('invitationTitle').value;
+      const message = document.getElementById('invitationMessage').value;
+      const method = document.getElementById('distributionMethod').value; // Ensure this element exists in your form
+    
+      // Fetch teacher ID
+      const response = await fetch(`/get_teacher_by_name?name=${encodeURIComponent(teacherName)}`);
+      const teachers = await response.json();
+    
+      if (teachers.length > 0) {
+        const teacherId = teachers[0].TeacherID;
+        // Send invitation
+        fetch('/send_invitation_to_teacher', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ title, message, teacherId, method }) // Including method in the payload
+        }).then(res => res.text())
+          .then(data => alert(data))
+          .catch(err => alert('Error sending invitation: ' + err));
+      } else {
+        alert('Teacher not found');
+      }
+    });
+    </script>
+</body>
+</html>

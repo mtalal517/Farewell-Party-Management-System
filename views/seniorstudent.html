@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senior Student Dashboard - Farewell Party Management System</title>
+<style>
+/* General styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+nav {
+  background-color: #f4f4f4;
+  padding: 10px 0;
+}
+
+nav ul {
+  list-style-type: none;
+  text-align: center;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #ff7f50;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Senior Student Dashboard styles */
+.dashboard-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.student-dashboard {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.menu-item {
+  margin-bottom: 20px;
+}
+
+.menu-item label {
+  display: block;
+  font-weight: bold;
+}
+
+.menu-item input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.menu-item button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.menu-item button:hover {
+  background-color: #555;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Welcome to the Senior Student Dashboard</h1>
+</header>
+
+<nav>
+  <ul>
+    <!-- Navigation links can be added here if needed -->
+  </ul>
+</nav>
+
+<main>
+  <!-- Senior Student Dashboard -->
+  <section id="seniorStudentDashboard" class="dashboard-container">
+    <div class="student-dashboard">
+      <h2>View/Manage/Edit Dinner Menu</h2>
+      <!-- Form for adding a new menu item -->
+      <div class="menu-item">
+        <h3>Add New Menu Item</h3>
+        <form action="submit_menu.php" method="POST">
+          <label for="menu-item-name">Menu Item Name:</label>
+          <input type="text" id="menu-item-name" name="menu-item-name" required>
+          <label for="menu-item-description">Menu Item Description:</label>
+          <input type="text" id="menu-item-description" name="menu-item-description">
+          <button type="submit">Add</button>
+        </form>
+      </div>
+      <!-- Form for editing existing menu items -->
+      <div class="menu-item">
+        <h3>Edit Menu Item</h3>
+        <form action="edit_menu.php" method="POST">
+          <label for="edit-menu-item">Select Menu Item:</label>
+          <select id="edit-menu-item" name="edit-menu-item" required>
+            <option value="">Select Menu Item</option>
+            <!-- Populate options dynamically from database or predefined list -->
+            <option value="menu-item-1">Menu Item 1</option>
+            <option value="menu-item-2">Menu Item 2</option>
+            <option value="menu-item-3">Menu Item 3</option>
+          </select>
+          <label for="edited-menu-item-name">New Menu Item Name:</label>
+          <input type="text" id="edited-menu-item-name" name="edited-menu-item-name">
+          <label for="edited-menu-item-description">New Menu Item Description:</label>
+          <input type="text" id="edited-menu-item-description" name="edited-menu-item-description">
+          <button type="submit">Edit</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- View Updates Section -->
+  <section id="viewUpdatesSection" class="dashboard-container">
+    <div class="student-dashboard">
+      <h2>View Updates</h2>
+      <!-- Announcements Section -->
+      <div class="updates-item">
+        <h3>View Announcements</h3>
+        <textarea rows="5" readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque justo vel orci pharetra, et consectetur nulla tristique. Sed at aliquam metus. Fusce commodo auctor justo id sollicitudin. Donec finibus erat id nisi rhoncus dapibus. Integer ultricies tortor at sapien tempus, a euismod urna congue. Donec sit amet sagittis odio. Nullam nec velit risus. Curabitur eget dolor sit amet nisi luctus fermentum. Nam commodo, est et pellentesque efficitur, lorem quam malesuada quam, sit amet rhoncus odio eros sed mauris. Donec suscipit vehicula tellus non tristique.</textarea>
+      </div>
+      <!-- Task Assignments Section -->
+      <div class="updates-item">
+        <h3>Check Task Assignments</h3>
+        <ul>
+          <li>Task 1 - Deadline: 2024-06-01</li>
+          <li>Task 2 - Deadline: 2024-06-05</li>
+          <li>Task 3 - Deadline: 2024-06-10</li>
+          <!-- Add more tasks dynamically -->
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2024 Farewell Party Management System. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

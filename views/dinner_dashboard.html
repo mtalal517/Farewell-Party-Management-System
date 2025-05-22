@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manager of Dinner Menu Team Dashboard - Farewell Party Management System</title>
+<style>
+/* General styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+nav {
+  background-color: #f4f4f4;
+  padding: 10px 0;
+}
+
+nav ul {
+  list-style-type: none;
+  text-align: center;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #ff7f50;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.dashboard-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.manager-dashboard {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.menu-item {
+  margin-bottom: 20px;
+}
+
+.menu-item label {
+  display: block;
+  font-weight: bold;
+}
+
+.menu-item input[type="text"],
+.menu-item input[type="number"],
+.menu-item select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.menu-item button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.menu-item button:hover {
+  background-color: #555;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Welcome to the Manager of Dinner Menu Team Dashboard</h1>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/dinner_dashboard">Dinner Menu Dashboard</a></li>
+    <li><a href="/budget_dashboard">Budget Dashboard</a></li>
+    <li><a href="/">Logout</a></li>
+  </ul>
+</nav>
+
+<main>
+  <!-- Manager of Dinner Menu Team Dashboard -->
+  <section class="dashboard-container">
+    <div class="manager-dashboard">
+      <h2>Dinner Menu Management</h2>
+      <!-- View Menu Section -->
+      <div class="menu-item">
+        <h3>View Menu</h3>
+        <table id="menu-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="menu-list">
+            <!-- Dynamic menu items will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+      <!-- Manage Menu Section -->
+      <div class="menu-item">
+        <h3>Add New Menu Item</h3>
+        <form id="add-menu-form">
+          <label for="new-menu-item-name">Menu Item Name:</label>
+          <input type="text" id="new-menu-item-name" required>
+          <label for="new-menu-item-description">Description:</label>
+          <input type="text" id="new-menu-item-description" required>
+          <label for="new-menu-item-price">Price:</label>
+          <input type="number" id="new-menu-item-price" required>
+          <button type="submit">Add</button>
+        </form>
+        <h3>Modify Menu Item</h3>
+        <form id="modify-menu-form">
+          <label for="modify-item-id">Menu Item ID:</label>
+          <input type="text" id="modify-item-id" required>
+      
+          <label for="modify-item-name">New Name:</label>
+          <input type="text" id="modify-item-name" required>
+      
+          <label for="modify-item-description">New Description:</label>
+          <input type="text" id="modify-item-description" required>
+      
+          <label for="modify-item-price">New Price:</label>
+          <input type="number" id="modify-item-price" required>
+      
+          <button type="submit">Modify Item</button>
+        </form>
+      </div>
+      <div class="menu-item" id="budget-container">
+        <h3>Budget Consideration</h3>
+        <p id="budget-info"></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2024 Farewell Party Management System. All rights reserved.</p>
+</footer>
+
+<script>
+
+    // Define deleteMenuItem globally
+    const deleteMenuItem = (itemId) => {
+      console.log('Deleting menu item with ID:', itemId);
+      fetch(`/delete_menu_item?id=${itemId}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+        if (!response.ok) {
+          // Handle non-JSON response:
+          return response.text().then(text => { throw new Error(text) });
+        }
+        return response.json(); // Assuming the successful response is in JSON format
+      })
+      .then(data => {
+        console.log(data);
+        fetchMenuItems(); // Refresh the menu
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    };
+    
+  document.addEventListener('DOMContentLoaded', function() {
+
+    const fetchMenuItems = () => {
+      fetch('/menu_items')
+        .then(response => response.json())
+        .then(data => {
+          const menuList = document.getElementById('menu-list');
+          menuList.innerHTML = ''; // Clear current list
+          data.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${item.Name}</td>
+              <td>${item.Description}</td>
+              <td>$${item.Price}</td>
+              <td><button onclick="deleteMenuItem('${item.MenuItemID}')">Delete</button></td>
+            `;
+            menuList.appendChild(tr);
+          });
+        })
+        .catch(error => console.error('Error fetching menu items:', error));
+    };
+    const fetchBudget = () => {
+      fetch('/budget')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('budget-info').textContent = `Current Spending: $${data.currentSpending} / Total Budget: $${data.totalBudget}`;
+        })
+        .catch(error => console.error('Error fetching budget:', error));
+    };
+  
+    const addMenuItem = (e) => {
+      e.preventDefault();
+      const name = document.getElementById('new-menu-item-name').value;
+      const description = document.getElementById('new-menu-item-description').value;
+      const price = document.getElementById('new-menu-item-price').value;
+  
+      fetch('/add_menu_item', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, description, price })
+      })
+      .then(response => response.text())
+      .then(data => {
+        alert(data);
+        fetchMenuItems(); // Refresh the menu
+        fetchBudget(); // Refresh budget info
+      })
+      .catch(error => console.error('Error:', error));
+    };
+    const modifyMenuItem = (e) => {
+      e.preventDefault();
+    
+      // Gather input values from the form fields
+      const itemId = document.getElementById('modify-item-id').value;
+      const name = document.getElementById('modify-item-name').value;
+      const description = document.getElementById('modify-item-description').value;
+      const price = document.getElementById('modify-item-price').value;
+  
+      const requestBody = JSON.stringify({
+        id: itemId,
+        newName: name,
+        newDescription: description,
+        newPrice: price
+      });
+    
+      // Send the request to your server's modify endpoint
+      fetch('/modify_menu_item', {
+        method: 'PUT', // Assuming your server expects a PUT request for modification
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: requestBody
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to modify the menu item');
+        }
+        return response.text();
+      })
+      .then(data => {
+        alert('Menu item modified successfully!');
+        fetchMenuItems(); // Refresh the menu list
+        fetchBudget(); // Optional: Refresh budget if needed
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to modify the menu item.');
+      });
+    
+      // Optionally, reset the form fields after submission
+      document.getElementById('modify-item-id').value = '';
+      document.getElementById('modify-item-name').value = '';
+      document.getElementById('modify-item-description').value = '';
+      document.getElementById('modify-item-price').value = '';
+    };
+
+    document.getElementById('modify-menu-form').addEventListener('submit', modifyMenuItem);
+    document.getElementById('add-menu-form').addEventListener('submit', addMenuItem);
+  
+    fetchMenuItems(); // Initial fetch of menu items
+    fetchBudget(); // Initial fetch of budget info
+  });
+</script>
+
+</body>
+</html>

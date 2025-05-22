@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Budget Management - Farewell Party Management System</title>
+<style>
+/* General styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+nav {
+  background-color: #f4f4f4;
+  padding: 10px 0;
+}
+
+nav ul {
+  list-style-type: none;
+  text-align: center;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #ff7f50;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Budget Management styles */
+.budget-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.budget-form {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.budget-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.budget-form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.budget-form button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.budget-form button:hover {
+  background-color: #555;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Budget Management</h1>
+</header>
+
+<nav>
+  <ul>
+    <!-- Navigation links can be added here if needed -->
+  </ul>
+</nav>
+
+<main>
+  <section id="budgetSummary">
+
+  <section id="budgetManagement" class="budget-container">
+
+    <div class="budget-form" id="budgetForm">
+      <h1>Budget Overview</h1>
+      <label for="eventDate">Event Date:</label>
+      <input type="date" id="eventDate">
+      <button onclick="fetchBudgetOverview()">Get Budget Data</button>
+      <table id="budgetTable" style="width: 100%; margin-top: 20px;">
+          <thead>
+              <tr>
+                  <th>Category</th>
+                  <th>Amount Allocated</th>
+              </tr>
+          </thead>
+          <tbody>
+              <!-- Data will be inserted here -->
+          </tbody>
+      </table>
+      
+    </div>  
+    <div class="budget-form" id="expenseForm">
+      <h2>Expense Tracking</h2>
+      <label for="expenseCategory">Expense Category:</label>
+      <input type="text" id="expenseCategory" name="expenseCategory" required>
+      
+      <label for="expenseAmount">Expense Amount:</label>
+      <input type="number" id="expenseAmount" name="expenseAmount" required>
+      
+      <label for="expenseDate">Event Date:</label>
+      <input type="date" id="expenseDate" name="expenseDate" required>
+
+      <button onclick="recordExpense()">Record Expense</button>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2024 Farewell Party Management System. All rights reserved.</p>
+</footer>
+
+<script>
+  function fetchBudgetOverview() 
+  {
+    const eventDate = document.getElementById('eventDate').value;
+    if (!eventDate) {
+        alert('Please select a date.');
+        return;
+    }
+
+    fetch(`/budget-overview?eventDate=${eventDate}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const table = document.getElementById('budgetTable').getElementsByTagName('tbody')[0];
+            table.innerHTML = '';  // Clear previous entries
+
+            if (data.length === 0) {
+                let row = table.insertRow();
+                let cell = row.insertCell(0);
+                cell.colSpan = 2;
+                cell.innerHTML = 'No data available for the selected date';
+                cell.style.textAlign = 'center';
+            }
+
+            data.forEach(item => {
+                let row = table.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                cell1.innerHTML = item.Category;
+                cell2.innerHTML = item.AmountAllocated;
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error fetching data.');
+        });
+
+        function submitExpense() {
+          const form = document.getElementById('expenseForm');
+          const category = document.getElementById('category').value;
+          const amount = document.getElementById('amount').value;
+          const eventDate = document.getElementById('eventDate').value;
+
+          const data = { category, amount, eventDate };
+
+          fetch('/record-expense', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data)
+          })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Failed to record expense');
+              }
+              return response.text();
+          })
+          .then(text => {
+              document.getElementById('responseMessage').innerText = text;
+          })
+          .catch(error => {
+              document.getElementById('responseMessage').innerText = error.message;
+          });
+      }
+}
+
+function recordExpense() {
+  const category = document.getElementById('expenseCategory').value;
+  const amount = document.getElementById('expenseAmount').value;
+  const eventDate = document.getElementById('expenseDate').value;
+
+  if (!category || !amount || !eventDate) {
+      alert('Please fill out all fields');
+      return;
+  }
+
+  const expenseData = {
+      category,
+      amount,
+      eventDate
+  };
+
+  fetch('/record-expense', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(expenseData)
+  })
+  .then(response => {
+      if (response.status === 404) {
+          alert('Category or Event Date not found');
+      } else if (!response.ok) {
+          throw new Error('Failed to record expense');
+      }
+      return response.text();
+  })
+  .then(result => {
+      alert(result);
+  })
+  .catch(error => {
+      console.error('Error:', error);
+      alert('Error recording expense.');
+  });
+}
+</script>
+
+</body>
+</html>
